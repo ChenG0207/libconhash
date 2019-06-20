@@ -41,16 +41,23 @@ struct conhash_s *conhash = conhash_init(NULL);
 
 - 2.设置节点以及将添加节点
 node_s是标识节点的结构体，定义如下：
+```
 struct node_s
 {
-char iden[64]; /* node name or some thing identifies the node 节点的唯一标识符，一般可以用机器名或IP地址*/
-u_int replicas; /* number of replica virtual nodes 这个节点对应的虚拟节点的数量 一般来说一个节点的虚拟节点数占总的虚拟节点数的比重越大，那么分配到这个节点的条目也就越多。*/
-u_int flag; /** 标识节点状态 NODE_FLAG_INIT 0x01 node is initialized, NODE_FLAG_IN 0x02  node is added in the server */
+char iden[64]; 
+/* node name or some thing identifies the node 节点的唯一标识符，一般可以用机器名或IP地址*/
+u_int replicas; 
+/* number of replica virtual nodes 这个节点对应的虚拟节点的数量 一般来说一个节点的虚拟节点数占总的虚拟节点数的比重越大，那么分配到这个节点的条目也就越多。*/
+u_int flag;
+/** 标识节点状态 NODE_FLAG_INIT 0x01 node is initialized, NODE_FLAG_IN 0x02  node is added in the server */
 };
 conhash_set_node(&nodes[0], "titanic", 32); //设置节点
 conhash_add_node(conhash, &nodes[0]); //添加节点
+```
 - 3.删除节点与查询：
+```
 conhash_del_node(conhash, &nodes[0]);
 struct node_s node = conhash_lookup(conhash, str);
+```
 - 4释放资源：
 conhash_fini(conhash);
