@@ -32,9 +32,24 @@ libconhash是一个一致性哈希库,具有如下一些特性:
 
 使用libconhash
 ---------------
-
 包含头文件：libconhash.h and configure.h
 然后链接静态库libconhash即可.
 
-
-
+1.初始化
+struct conhash_s *conhash = conhash_init(NULL);
+其中参数是个函数指针，指定将字符串转成long int的hash函数。默认hash函数的实现是md5
+2.设置节点以及将添加节点
+node_s是标识节点的结构体，定义如下：
+struct node_s
+{
+char iden[64]; /* node name or some thing identifies the node 节点的唯一标识符，一般可以用机器名或IP地址*/
+u_int replicas; /* number of replica virtual nodes 这个节点对应的虚拟节点的数量 一般来说一个节点的虚拟节点数占总的虚拟节点数的比重越大，那么分配到这个节点的条目也就越多。*/
+u_int flag; /** 标识节点状态 NODE_FLAG_INIT 0x01 node is initialized, NODE_FLAG_IN 0x02  node is added in the server */
+};
+conhash_set_node(&nodes[0], "titanic", 32); //设置节点
+conhash_add_node(conhash, &nodes[0]); //添加节点
+删除节点与查询：
+conhash_del_node(conhash, &nodes[0]);
+struct node_s node = conhash_lookup(conhash, str);
+释放资源：
+conhash_fini(conhash);
